@@ -1,5 +1,13 @@
-from pprint import PrettyPrinter
+import pprint
 import requests
 
-response = requests.get('https://api.chess.com/pub/player/p1u95').json()
-PrettyPrinter().pprint(response)
+printer = pprint.PrettyPrinter()
+
+
+def get_player(username: str):
+    response = requests.get(f'https://api.chess.com/pub/player/{username}').json()
+    printer.pprint(response)
+
+
+username = input('What is the username whose data you want to steal? ')
+get_player(username)
