@@ -4,10 +4,19 @@ import requests
 printer = pprint.PrettyPrinter()
 
 
+def print_leaderboards():
+    data = requests.get('https://api.chess.com/pub/leaderboards').json()
+    categories = data.keys()
+
+    for category in categories:
+        print(f'Category: {category}')
+        for idx, entry in enumerate(data[category]):
+            print(f'Rank: {idx + 1} | Username: {entry["username"]} | Rating: {entry["score"]}')
+
+
 def get_player(username: str):
     response = requests.get(f'https://api.chess.com/pub/player/{username}').json()
     printer.pprint(response)
 
 
-username = input('What is the username whose data you want to steal? ')
-get_player(username)
+print_leaderboards()
