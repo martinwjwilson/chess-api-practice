@@ -3,6 +3,8 @@ import requests
 
 printer = pprint.PrettyPrinter()
 username = "p1u95"
+year = "2022"
+month = "09"
 
 
 def print_leaderboards():
@@ -15,16 +17,19 @@ def print_leaderboards():
             print(f'Rank: {idx + 1} | Username: {entry["username"]} | Rating: {entry["score"]}')
 
 
-def get_player(username: str):
-    response = requests.get(f'https://api.chess.com/pub/player/{username}').json()
+def get_player(player_username: str):
+    response = requests.get(f'https://api.chess.com/pub/player/{player_username}').json()
     printer.pprint(response)
 
 
-def get_player_game_archives():
-    year = "2022"
-    month = "09"
-    response = requests.get(f"https://api.chess.com/pub/player/{username}/games/{year}/{month}").json()
-    printer.pprint(response)
+def get_player_game_archives(player_username: str, selected_year: str, selected_month: str):
+    """
+    Returns a json of games for the player for the given year and month
+    """
+    response = requests.get(f"https://api.chess.com/pub/player/{player_username}"
+                            f"/games/{selected_year}/{selected_month}").json()
+    return response
 
 
-get_player_game_archives()
+player_games = get_player_game_archives(username, year, month)
+printer.pprint(player_games)
