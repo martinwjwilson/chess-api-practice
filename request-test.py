@@ -2,6 +2,7 @@ import pprint
 import requests
 
 printer = pprint.PrettyPrinter()
+username = "p1u95"
 
 
 def print_leaderboards():
