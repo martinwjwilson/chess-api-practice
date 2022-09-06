@@ -32,22 +32,22 @@ def get_player_game_archives(player_username: str, selected_year: str, selected_
     return response
 
 
-def get_rating_changes(games: dict, time_class: str):
+def get_rating_changes(games: dict, time_class: str) -> list:
     """
     Return a list of ratings from a list of games
     """
-    # specify the game type
     games = games['games']
     list_of_ratings = []
     for game in games:
-        if game['white']['username'] == username:
-            rating_after_game = game['white']['rating']
-            list_of_ratings.append(rating_after_game)
-            print(f"Rating for {username}: {rating_after_game}")
-        else:
-            rating_after_game = game['black']['rating']
-            list_of_ratings.append(rating_after_game)
-            print(f"Rating for {username}: {rating_after_game}")
+        if game['time_class'] == time_class:
+            if game['white']['username'] == username:
+                rating_after_game = game['white']['rating']
+                list_of_ratings.append(rating_after_game)
+                print(f"Rating for {username}: {rating_after_game}")
+            else:
+                rating_after_game = game['black']['rating']
+                list_of_ratings.append(rating_after_game)
+                print(f"Rating for {username}: {rating_after_game}")
     plt.plot(list_of_ratings)
     plt.ylabel('Rating')
     plt.savefig("mygraph.png")
