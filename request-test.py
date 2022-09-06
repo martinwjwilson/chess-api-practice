@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pprint
 import requests
 
@@ -31,22 +32,26 @@ def get_player_game_archives(player_username: str, selected_year: str, selected_
     return response
 
 
-def get_rating_changes(games: dict):
+def get_rating_changes(games: dict, time_class: str):
     """
     Return a list of ratings from a list of games
     """
+    # specify the game type
     games = games['games']
-    number_of_blitz_games = 0
-    number_of_bullet_games = 0
-    print(f"Number of games: {len(games)}")
+    list_of_ratings = []
     for game in games:
-        if game['time_class'] == 'blitz':
-            number_of_blitz_games += 1
-        elif game['time_class'] == 'bullet':
-            number_of_bullet_games += 1
-    print(f"Number of blitz games: {number_of_blitz_games}")
-    print(f"Number of bullet games: {number_of_bullet_games}")
+        if game['white']['username'] == username:
+            rating_after_game = game['white']['rating']
+            list_of_ratings.append(rating_after_game)
+            print(f"Rating for {username}: {rating_after_game}")
+        else:
+            rating_after_game = game['black']['rating']
+            list_of_ratings.append(rating_after_game)
+            print(f"Rating for {username}: {rating_after_game}")
+    plt.plot(list_of_ratings)
+    plt.ylabel('Rating')
+    plt.savefig("mygraph.png")
 
 
 player_games = get_player_game_archives(username, year, month)
-get_rating_changes(player_games)
+get_rating_changes(player_games, 'blitz')
