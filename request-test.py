@@ -6,6 +6,7 @@ printer = pprint.PrettyPrinter()
 username = "p1u95"
 year = "2022"
 month = "09"
+time_class = "bullet"
 
 
 def print_leaderboards():
@@ -48,10 +49,12 @@ def get_rating_changes(games: dict, time_class: str) -> list:
                 rating_after_game = game['black']['rating']
                 list_of_ratings.append(rating_after_game)
                 print(f"Rating for {username}: {rating_after_game}")
-    plt.plot(list_of_ratings)
-    plt.ylabel('Rating')
-    plt.savefig("mygraph.png")
+    return list_of_ratings
 
 
 player_games = get_player_game_archives(username, year, month)
-get_rating_changes(player_games, 'blitz')
+rating_changes = get_rating_changes(player_games, time_class)
+plt.plot(rating_changes)
+plt.title(f"{time_class.capitalize()} rating across {month}/{year}")
+plt.ylabel('Rating')
+plt.show()
