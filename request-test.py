@@ -31,5 +31,22 @@ def get_player_game_archives(player_username: str, selected_year: str, selected_
     return response
 
 
+def get_rating_changes(games: dict):
+    """
+    Return a list of ratings from a list of games
+    """
+    games = games['games']
+    number_of_blitz_games = 0
+    number_of_bullet_games = 0
+    print(f"Number of games: {len(games)}")
+    for game in games:
+        if game['time_class'] == 'blitz':
+            number_of_blitz_games += 1
+        elif game['time_class'] == 'bullet':
+            number_of_bullet_games += 1
+    print(f"Number of blitz games: {number_of_blitz_games}")
+    print(f"Number of bullet games: {number_of_bullet_games}")
+
+
 player_games = get_player_game_archives(username, year, month)
-printer.pprint(player_games)
+get_rating_changes(player_games)
