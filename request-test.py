@@ -20,4 +20,11 @@ def get_player(username: str):
     printer.pprint(response)
 
 
-print_leaderboards()
+def get_player_game_archives():
+    year = "2022"
+    month = "09"
+    response = requests.get(f"https://api.chess.com/pub/player/{username}/games/{year}/{month}").json()
+    printer.pprint(response)
+
+
+get_player_game_archives()
