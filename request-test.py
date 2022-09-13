@@ -31,14 +31,14 @@ def get_player_game_archives(player_username: str, selected_year: str, selected_
     """
     response = requests.get(f"https://api.chess.com/pub/player/{player_username}"
                             f"/games/{selected_year}/{selected_month}").json()
-    return response
+    games = response["games"]
+    return games
 
 
 def get_rating_changes(games: dict, time_class: str) -> list:
     """
     Return a list of ratings from a list of games
     """
-    games = games['games']
     list_of_ratings = []
     for game in games:
         if game['time_class'] == time_class:
@@ -53,9 +53,38 @@ def get_rating_changes(games: dict, time_class: str) -> list:
     return list_of_ratings
 
 
-player_games = get_player_game_archives(username, year, month)
-rating_changes = get_rating_changes(player_games, time_class)
-plt.plot(rating_changes)
-plt.title(f"{time_class.capitalize()} rating across {month}/{year}")
-plt.ylabel('Rating')
-plt.show()
+def get_player_game_results(player_username: str, date: datetime, time_class: str):
+    """
+    Get a player's game results for a given time class on the specified day
+    """
+    games = get_player_game_archives(player_username=player_username,
+                                             selected_year=date.strftime("%Y"),
+                                             selected_month=date.strftime("%m"))
+    wins = 0
+    losses = 0
+    for game in games:
+        if game['time_class'] == time_class:
+            if date.day == datetime.fromtimestamp(game['end_time']).day:
+                if game['white']['username'] == username:
+                    if game['white']['result'] == "win":
+                        wins += 1
+                    else:
+                        losses += 1
+                else:
+                    if game['black']['result'] == "win":
+                        wins += 1
+                    else:
+                        losses += 1
+    print(f"{username} stats in {time_class} on {date.strftime('%d/%m/%Y')}\nWins: {wins}\nLosses: {losses}")
+
+
+get_player_game_results(player_username=username,
+                        date=datetime.now(),
+                        time_class=time_class)
+
+# player_games = get_player_game_archives(username, year, month)
+# rating_changes = get_rating_changes(player_games, time_class)
+# plt.plot(rating_changes)
+# plt.title(f"{time_class.capitalize()} rating across {month}/{year}")
+# plt.ylabel('Rating')
+# plt.show()
