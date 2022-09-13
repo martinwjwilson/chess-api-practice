@@ -1,12 +1,13 @@
+from datetime import datetime
 import matplotlib.pyplot as plt
 import pprint
 import requests
 
 printer = pprint.PrettyPrinter()
 username = "p1u95"
-year = "2022"
-month = "09"
-time_class = "bullet"
+year = datetime.now().strftime("%Y")
+month = datetime.now().strftime("%m")
+time_class = "blitz"
 
 
 def print_leaderboards():
