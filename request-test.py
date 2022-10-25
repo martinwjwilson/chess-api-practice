@@ -32,12 +32,12 @@ def get_player_game_archives(player_username: str, selected_year: str, selected_
     """
     response = requests.get(f"https://api.chess.com/pub/player/{player_username}"
                             f"/games/{selected_year}/{selected_month}").json()
-    # TODO: Put a check in here for if the response fails
+    # TODO: Error handling - Put a check in here for if the response fails
     games = response["games"]
     return games
 
 
-def get_rating_changes_graph(games: dict, time_class: str) -> list:
+def get_rating_changes(games: dict, time_class: str) -> list:
     """
     Return a list of ratings from a list of games
     """
@@ -113,12 +113,13 @@ def get_player_rating_change(player_username: str, date: datetime, time_control:
                                                         date=date,
                                                         time_control=time_control,
                                                         games=games)
+    # TODO: Check that there is a previous rating
     player_rating_change = player_rating_at_end_of_day - previous_player_rating
     print(f"{player_username} rating change for {date.strftime('%d/%m/%Y')}\n{player_rating_change}")
 
 
 def get_player_previous_rating(player_username: str, date: datetime, time_control: str, games: list):
-    # Work backwards from the given date to find the closest game rating
+    # Work backwards from the given date to find and return the closest previous game rating
     # If there isn't one in the given month then go back a month and get another archive until there aren't
     # any more months to go
     for game in reversed(games):
@@ -153,7 +154,7 @@ get_player_rating_change(player_username=username,
 #                         time_class=time_class)
 
 # player_games = get_player_game_archives(username, year, month)
-# rating_changes = get_rating_changes_graph(player_games, time_class)
+# rating_changes = get_rating_changes(player_games, time_class)
 # plt.plot(rating_changes)
 # plt.title(f"{time_class.capitalize()} rating across {month}/{year}")
 # plt.ylabel('Rating')
