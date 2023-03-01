@@ -1,10 +1,35 @@
 from chessdotcom import get_leaderboards, get_player_profile
 import pprint
+import json
+import discord
+from discord.ext import commands
 
 printer = pprint.PrettyPrinter()
 
+# load bot token
+with open("token.json", 'r') as f:
+    token = json.load(f)['TOKEN']
 
-def print_leaderboards():
+# intents
+intents = discord.Intents.default()
+intents.message_content = True
+client = commands.Bot(command_prefix=">", intents=intents)
+
+
+@client.event
+async def on_ready():
+    print(f"{client.user.name} - {client.user.id}")  # name of bot and ID
+    print(discord.__version__)  # current version of discord.py
+    print("Ready...")
+
+
+@client.command()
+async def foo(ctx, arg):
+    await ctx.send(arg)
+
+
+@client.command()
+async def print_leaderboards(ctx):
     data = get_leaderboards().json
     leaderboard = data.get('leaderboards')
     # printer.pprint(leaderboard)
@@ -14,7 +39,8 @@ def print_leaderboards():
             print(entry)
 
 
-def get_player(username: str):
+@client.command()
+async def get_player(ctx, username: str):
     data = get_player_profile(username).json
     # printer.pprint(data)
     player = data.get('player')
@@ -23,5 +49,5 @@ def get_player(username: str):
     print(f'{name} lives in {location}')
 
 
-username = input('What is the username whose data you want to steal? ')
-get_player(username)
+if __name__ == '__main__':
+    client.run(token)
