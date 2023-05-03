@@ -24,15 +24,9 @@ async def on_ready():
 
 
 @client.command()
-async def foo(ctx, arg):
-    await ctx.send(arg)
-
-
-@client.command()
 async def print_leaderboards(ctx):
     data = get_leaderboards().json
     leaderboard = data.get('leaderboards')
-    # printer.pprint(leaderboard)
     for category in leaderboard:
         print('Category: ', category)
         for idx, entry in enumerate(leaderboard[category]):
@@ -42,11 +36,13 @@ async def print_leaderboards(ctx):
 @client.command()
 async def get_player(ctx, username: str):
     data = get_player_profile(username).json
-    # printer.pprint(data)
     player = data.get('player')
     name = player['name']
     location = player['location']
-    print(f'{name} lives in {location}')
+    message = f'{name} lives in {location}'
+    # TODO: Log instead of print
+    print(message)
+    await ctx.send(message)
 
 
 if __name__ == '__main__':
