@@ -45,5 +45,12 @@ async def get_player(ctx, username: str):
     await ctx.send(message)
 
 
+@client.command()
+async def set_player(ctx):
+    await ctx.send("What is your username on chess.com?")
+    message = await client.wait_for('message')
+    await ctx.send(f"You are now linked to: {message.content}")
+
+
 if __name__ == '__main__':
     client.run(token)
