@@ -1,6 +1,8 @@
 from chessdotcom import get_leaderboards, get_player_profile
 import pprint
 import json
+import requests
+from networking import Networking
 import discord
 from discord.ext import commands
 
@@ -35,22 +37,42 @@ async def print_leaderboards(ctx):
 
 @client.command()
 async def get_player(ctx, username: str):
-    data = get_player_profile(username).json
-    player = data.get('player')
-    name = player['name']
-    location = player['location']
-    message = f'{name} lives in {location}'
-    # TODO: Log instead of print
-    print(message)
-    await ctx.send(message)
+    if username == "":
+        return
+    player_data = Networking.get_player(username)
+    printer.pprint(player_data["id"])
+
+    # data = get_player_profile(username).json
+    # player = data.get('player')
+    # name = player['name']
+    # location = player['location']
+    # message = f'{name} lives in {location}'
+    # # TODO: Log instead of print
+    # print(message)
+    # await ctx.send(message)
 
 
 @client.command()
 async def set_player(ctx):
     await ctx.send("What is your username on chess.com?")
     message = await client.wait_for('message')
+    # await print_leaderboards(ctx)
+    print(Networking.test_method())
     await ctx.send(f"You are now linked to: {message.content}")
 
 
 if __name__ == '__main__':
     client.run(token)
+
+
+# class Networking:
+#
+#     @staticmethod
+#     def print_leaderboards():
+#         data = requests.get('https://api.chess.com/pub/leaderboards').json()
+#         categories = data.keys()
+#
+#         for category in categories:
+#             print(f'Category: {category}')
+#             for idx, entry in enumerate(data[category]):
+#                 print(f'Rank: {idx + 1} | Username: {entry["username"]} | Rating: {entry["score"]}')
