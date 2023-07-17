@@ -36,11 +36,12 @@ async def print_leaderboards(ctx):
 
 
 @client.command()
-async def get_player(ctx, username: str):
+async def player_rating(ctx, username: str):
     if username == "":
+        # TODO: ask for the players username
         return
-    player_data = Networking.get_player(username)
-    printer.pprint(player_data["id"])
+    player_data = Networking.player_rating(player_username=username)
+    # printer.pprint(player_data["id"])
 
     # data = get_player_profile(username).json
     # player = data.get('player')
