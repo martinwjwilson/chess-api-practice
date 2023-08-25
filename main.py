@@ -2,6 +2,8 @@ from chessdotcom import get_leaderboards, get_player_profile
 import pprint
 import json
 import requests
+
+import networking
 from networking import Networking
 import discord
 from discord.ext import commands
@@ -40,8 +42,9 @@ async def player_rating(ctx, username: str):
     if username == "":
         # TODO: ask for the players username
         return
-    player_data = Networking.player_rating(player_username=username)
-    # printer.pprint(player_data["id"])
+    network_client = Networking()
+    player_rating = network_client.get_player_rating(player_username=username, game_type="chess_blitz")
+    await ctx.send(f"Your rating is {player_rating}")
 
     # data = get_player_profile(username).json
     # player = data.get('player')
@@ -61,6 +64,8 @@ async def set_player(ctx):
     print(Networking.test_method())
     await ctx.send(f"You are now linked to: {message.content}")
 
+
+# main
 
 if __name__ == '__main__':
     client.run(token)
