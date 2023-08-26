@@ -56,7 +56,5 @@ async def player_rating(ctx, username: str):
 #     await ctx.send(f"You are now linked to: {message.content}")
 
 
-# main
-
 if __name__ == '__main__':
     client.run(token)
