@@ -43,8 +43,8 @@ async def player_rating(ctx, username: str):
         # TODO: ask for the players username
         return
     network_client = Networking()
-    player_rating = network_client.get_player_rating(player_username=username, game_type="chess_blitz")
-    await ctx.send(f"Your rating is {player_rating}")
+    rating = network_client.get_player_rating(player_username=username, game_type="chess_blitz")
+    await ctx.send(f"The rating for **{username}** rating is **{rating}**")
 
     # data = get_player_profile(username).json
     # player = data.get('player')
