@@ -3,7 +3,6 @@ import pprint
 import json
 import requests
 
-import networking
 from networking import Networking
 import discord
 from discord.ext import commands
