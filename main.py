@@ -37,10 +37,17 @@ async def print_leaderboards(ctx):
 
 
 @client.command()
-async def player_rating(ctx, username: str):
+async def player_rating(ctx, username: str = ""):
+    # ask for username if one wasn't provided
+    print(f"Username is {username}")
     if username == "":
-        # TODO: ask for the players username
-        return
+        username = await ctx.wait_for('message')
+        print(f"1: {username}")
+        # check that there is a username
+        if username == "":
+            return
+
+    print(f"2 {username}")
     network_client = Networking()
     rating = network_client.get_player_rating(player_username=username, game_type="chess_blitz")
     await ctx.send(f"The rating for **{username}** rating is **{rating}**")
