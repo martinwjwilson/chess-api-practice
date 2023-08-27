@@ -1,7 +1,7 @@
 from chessdotcom import get_leaderboards, get_player_profile
 import pprint
 import json
-import requests
+import typing
 
 from networking import Networking
 import discord
@@ -37,17 +37,19 @@ async def print_leaderboards(ctx):
 
 
 @client.command()
-async def player_rating(ctx, username: str = ""):
+async def player_rating(ctx, username: typing.Optional[str] = ""):
     # ask for username if one wasn't provided
-    print(f"Username is {username}")
     if username == "":
-        username = await ctx.wait_for('message')
-        print(f"1: {username}")
+        await ctx.send("What is your username?")
+        msg = await client.wait_for('message',
+                                    check=lambda message: message.author == ctx.author)
+        username = msg.content
+        print(f"username is {username}")
         # check that there is a username
         if username == "":
             return
 
-    print(f"2 {username}")
+    print(f"username is now {username}")
     network_client = Networking()
     rating = network_client.get_player_rating(player_username=username, game_type="chess_blitz")
     await ctx.send(f"The rating for **{username}** rating is **{rating}**")
