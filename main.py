@@ -37,22 +37,32 @@ async def print_leaderboards(ctx):
 
 
 @client.command()
-async def player_rating(ctx, username: typing.Optional[str] = ""):
+async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typing.Optional[str] = ""):
     # ask for username if one wasn't provided
     if username == "":
         await ctx.send("What is your username?")
         msg = await client.wait_for('message',
                                     check=lambda message: message.author == ctx.author)
         username = msg.content
-        print(f"username is {username}")
         # check that there is a username
         if username == "":
             return
 
+    # ask for game type if one wasn't provided
+    if game_type == "":
+        await ctx.send("What game type do you want to check?")
+        msg = await client.wait_for('message',
+                                    check=lambda message: message.author == ctx.author)
+        # TODO: Convert input to possible game types
+        game_type = msg.content
+        # check that there is a game_type
+        if game_type == "":
+            return
+
     print(f"username is now {username}")
     network_client = Networking()
-    rating = network_client.get_player_rating(player_username=username, game_type="chess_blitz")
-    await ctx.send(f"The rating for **{username}** rating is **{rating}**")
+    rating = network_client.get_player_rating(player_username=username, game_type=game_type)
+    await ctx.send(f"The rating for **{username}** in **{game_type}** is **{rating}**")
 
 
 # TODO: Implement set_player function
