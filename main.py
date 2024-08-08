@@ -36,7 +36,7 @@ async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typ
     if username == "":
         # TODO: create constants file for questions
         question = "What is your username?"
-        username = get_input_from_question(question=question)
+        username = get_input_from_question(ctx, question=question)
         if username == "":
             # TODO: throw error?
             await ctx.send("Error")
@@ -45,7 +45,7 @@ async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typ
     # ask for game type if one wasn't provided
     if game_type == "":
         question = "What game type do you want to check?"
-        game_type = get_input_from_question(question=question)
+        game_type = get_input_from_question(ctx, question=question)
         if game_type == "":
             # TODO: throw error?
             await ctx.send("Error")
