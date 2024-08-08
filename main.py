@@ -1,9 +1,8 @@
 from chessdotcom import get_leaderboards, get_player_profile
 import pprint
 import json
-import requests
+import typing
 
-import networking
 from networking import Networking
 import discord
 from discord.ext import commands
@@ -38,13 +37,38 @@ async def print_leaderboards(ctx):
 
 
 @client.command()
-async def player_rating(ctx, username: str):
+async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typing.Optional[str] = ""):
+    # ask for username if one wasn't provided
     if username == "":
-        # TODO: ask for the players username
-        return
+        # TODO: create constants file for questions
+        question = "What is your username?"
+        username = get_input_from_question(question=question)
+        if username == "":
+            # TODO: throw error?
+            await ctx.send("Error")
+            return
+
+    # ask for game type if one wasn't provided
+    if game_type == "":
+        question = "What game type do you want to check?"
+        game_type = get_input_from_question(question=question)
+        if game_type == "":
+            # TODO: throw error?
+            await ctx.send("Error")
+            return
+    # TODO: Convert input to possible game types
+
+    print(f"username is now {username}")
     network_client = Networking()
-    rating = network_client.get_player_rating(player_username=username, game_type="chess_blitz")
-    await ctx.send(f"The rating for **{username}** rating is **{rating}**")
+    rating = network_client.get_player_rating(player_username=username, game_type=game_type)
+    await ctx.send(f"The rating for **{username}** in **{game_type}** is **{rating}**")
+
+
+async def get_input_from_question(ctx, question: str) -> str:
+    await ctx.send(question)
+    msg = await client.wait_for('message',
+                                check=lambda message: message.author == ctx.author)
+    return msg.content
 
 
 # TODO: Implement set_player function
@@ -56,8 +80,6 @@ async def player_rating(ctx, username: str):
 #     print(Networking.test_method())
 #     await ctx.send(f"You are now linked to: {message.content}")
 
-
-# main
 
 if __name__ == '__main__':
     client.run(token)
