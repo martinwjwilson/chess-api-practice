@@ -61,7 +61,7 @@ async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typ
 async def get_input_from_question(ctx, question: str) -> str:
     await ctx.send(question)
     msg = await bot.wait_for('message',
-                                check=lambda message: message.author == ctx.author)
+                             check=lambda message: message.author == ctx.author)
     return msg.content
 
 
