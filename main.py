@@ -1,4 +1,3 @@
-from chessdotcom import get_leaderboards, get_player_profile
 import pprint
 import json
 import typing
@@ -27,13 +26,9 @@ async def on_ready():
 
 
 @client.command()
-async def print_leaderboards(ctx):
-    data = get_leaderboards().json
-    leaderboard = data.get('leaderboards')
-    for category in leaderboard:
-        print('Category: ', category)
-        for idx, entry in enumerate(leaderboard[category]):
-            print(entry)
+async def hello(ctx):
+    print("Someone said hello")
+    await ctx.send("Hi there :3")
 
 
 @client.command()
