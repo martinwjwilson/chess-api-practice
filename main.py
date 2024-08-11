@@ -76,4 +76,7 @@ async def get_input_from_question(ctx, question: str) -> str:
 
 
 if __name__ == '__main__':
-    bot.run(token)
+    networking = Networking()
+    networking.get_player(player_username="p1u95")
+    networking.get_player_rating(player_username="p1u95", game_type="chess_blitz")
+    # bot.run(token)
