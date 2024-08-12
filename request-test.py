@@ -6,10 +6,10 @@ import requests
 
 printer = pprint.PrettyPrinter()
 networking = Networking()
-username = "p1u95"
+test_username = "p1u95"
 year = datetime.now().strftime("%Y")
 month = datetime.now().strftime("%m")
-time_class = "blitz"
+test_time_class = "blitz"
 
 
 def print_leaderboards():
@@ -34,24 +34,21 @@ def convert_archive_to_games(archive_url: str):
     return networking.get_games_from_archive(archive_url=archive_url)
 
 
-# def get_rating_changes(games: dict, time_class: str) -> list:
-#     """
-#     Return a list of ratings from a list of games
-#     """
-#     list_of_ratings = []
-#     for game in games:
-#         if game['time_class'] == time_class:
-#             if game['white']['username'] == username:
-#                 rating_after_game = game['white']['rating']
-#                 list_of_ratings.append(rating_after_game)
-#                 print(f"Rating for {username}: {rating_after_game}")
-#             else:
-#                 rating_after_game = game['black']['rating']
-#                 list_of_ratings.append(rating_after_game)
-#                 print(f"Rating for {username}: {rating_after_game}")
-#     return list_of_ratings
-#
-#
+def get_rating_changes(username: str, games: dict, time_class: str) -> list:
+    """
+    Return a list of ratings from a list of games
+    """
+    list_of_ratings = []
+    for game in games:
+        if game['time_class'] == time_class:  # Check if the game is the correct time class
+            printer.pprint(game)
+            player_colour = "white" if game['white']['username'] == username else "black"
+            rating_after_game = game[player_colour]['rating']
+            list_of_ratings.append(rating_after_game)
+            print(f"Rating for {username} after the game: {rating_after_game}")
+    # return list_of_ratings
+
+
 # def get_player_game_results(player_username: str, date: datetime, time_class: str):
 #     """
 #     Get a player's game results for a given time class on the specified day
@@ -150,11 +147,11 @@ def convert_archive_to_games(archive_url: str):
 #                         date=datetime.now(),
 #                         time_class=time_class)
 
-archives = get_player_game_archives(username)
+archives = get_player_game_archives(test_username)
 test_archive = archives[-1]
 print(test_archive)
-games = convert_archive_to_games(archive_url=test_archive)
-printer.pprint(games)
+list_of_games = convert_archive_to_games(archive_url=test_archive)
+get_rating_changes(username=test_username, games=list_of_games, time_class=test_time_class)
 
 # printer.pprint(player_games)
 # rating_changes = get_rating_changes(player_games, time_class)
