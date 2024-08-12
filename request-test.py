@@ -22,8 +22,8 @@ def print_leaderboards():
             print(f'Rank: {idx + 1} | Username: {entry["username"]} | Rating: {entry["score"]}')
 
 
-def get_player_game_archives(player_username: str):
-    networking.get_player_game_archives(player_username=player_username)
+def get_player_game_archives(player_username: str) -> [str]:
+    return networking.get_player_game_archives(player_username=player_username)
 
 
 def convert_archive_to_games(archive_url: str):
@@ -31,7 +31,7 @@ def convert_archive_to_games(archive_url: str):
     Convert an archive url into a list of game data for that month
     :return:
     """
-    networking.get_games_from_archive(archive_url=archive_url)
+    return networking.get_games_from_archive(archive_url=archive_url)
 
 
 # def get_rating_changes(games: dict, time_class: str) -> list:
@@ -150,7 +150,12 @@ def convert_archive_to_games(archive_url: str):
 #                         date=datetime.now(),
 #                         time_class=time_class)
 
-get_player_game_archives(username)
+archives = get_player_game_archives(username)
+test_archive = archives[-1]
+print(test_archive)
+games = convert_archive_to_games(archive_url=test_archive)
+printer.pprint(games)
+
 # printer.pprint(player_games)
 # rating_changes = get_rating_changes(player_games, time_class)
 # plt.plot(rating_changes)
