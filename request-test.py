@@ -1,6 +1,5 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import matplotlib.pyplot as plt
 import pprint
 import requests
 
