@@ -1,8 +1,6 @@
-from chessdotcom import get_leaderboards, get_player_profile
 import pprint
 import json
 import typing
-
 from networking import Networking
 import discord
 from discord.ext import commands
@@ -16,33 +14,29 @@ with open("token.json", 'r') as f:
 # intents
 intents = discord.Intents.default()
 intents.message_content = True
-client = commands.Bot(command_prefix=">", intents=intents)
+bot = commands.Bot(command_prefix=">", intents=intents)
 
 
-@client.event
+@bot.event
 async def on_ready():
-    print(f"{client.user.name} - {client.user.id}")  # name of bot and ID
+    print(f"{bot.user.name} - {bot.user.id}")  # name of bot and ID
     print(discord.__version__)  # current version of discord.py
     print("Ready...")
 
 
-@client.command()
-async def print_leaderboards(ctx):
-    data = get_leaderboards().json
-    leaderboard = data.get('leaderboards')
-    for category in leaderboard:
-        print('Category: ', category)
-        for idx, entry in enumerate(leaderboard[category]):
-            print(entry)
+@bot.command()
+async def hello(ctx):
+    print("Someone said hello")
+    await ctx.send("Hi there :3")
 
 
-@client.command()
+@bot.command()
 async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typing.Optional[str] = ""):
     # ask for username if one wasn't provided
     if username == "":
         # TODO: create constants file for questions
         question = "What is your username?"
-        username = get_input_from_question(question=question)
+        username = get_input_from_question(ctx, question=question)
         if username == "":
             # TODO: throw error?
             await ctx.send("Error")
@@ -51,7 +45,7 @@ async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typ
     # ask for game type if one wasn't provided
     if game_type == "":
         question = "What game type do you want to check?"
-        game_type = get_input_from_question(question=question)
+        game_type = get_input_from_question(ctx, question=question)
         if game_type == "":
             # TODO: throw error?
             await ctx.send("Error")
@@ -59,27 +53,30 @@ async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typ
     # TODO: Convert input to possible game types
 
     print(f"username is now {username}")
-    network_client = Networking()
-    rating = network_client.get_player_rating(player_username=username, game_type=game_type)
+    network_bot = Networking()
+    rating = network_bot.get_player_rating(player_username=username, game_type=game_type)
     await ctx.send(f"The rating for **{username}** in **{game_type}** is **{rating}**")
 
 
 async def get_input_from_question(ctx, question: str) -> str:
     await ctx.send(question)
-    msg = await client.wait_for('message',
-                                check=lambda message: message.author == ctx.author)
+    msg = await bot.wait_for('message',
+                             check=lambda message: message.author == ctx.author)
     return msg.content
 
 
 # TODO: Implement set_player function
-# @client.command()
+# @bot.command()
 # async def set_player(ctx):
 #     await ctx.send("What is your username on chess.com?")
-#     message = await client.wait_for('message')
+#     message = await bot.wait_for('message')
 #     # await print_leaderboards(ctx)
 #     print(Networking.test_method())
 #     await ctx.send(f"You are now linked to: {message.content}")
 
 
 if __name__ == '__main__':
-    client.run(token)
+    networking = Networking()
+    networking.get_player(player_username="p1u95")
+    networking.get_player_rating(player_username="p1u95", game_type="chess_blitz")
+    # bot.run(token)
