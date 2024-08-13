@@ -18,10 +18,9 @@ class Brain:
         return networking.get_player_game_archives(player_username=player_username)
 
     @staticmethod
-    def convert_archive_to_games(archive_url: str):
+    def convert_archive_to_games(archive_url: str) -> list[Game]:
         """
         Convert an archive url into a list of game data for that month
-        :return:
         """
         archived_games = networking.get_games_from_archive(archive_url=archive_url)
         converted_list_of_games = []
@@ -34,15 +33,15 @@ class Brain:
         return converted_list_of_games
 
     @staticmethod
-    def get_rating_changes(username: str, games: list[Game], time_class: str) -> list:
+    def get_rating_changes(username: str, games: list[Game], time_class: str) -> list[int]:
         """
         Return a list of ratings from a list of games
         """
         list_of_ratings = []
-        for game in games:
-            if game.time_class == time_class:
+        for game in games:  # Go through each game
+            if game.time_class == time_class:  # Check the game is the correct time class. e.g. bullet or blitz
+                # Determine the player's colour, get their rating and add it to the list of ratings
                 player_colour = "white" if game.white_username == username else "black"
                 rating_after_game = game.white_rating if player_colour == "white" else game.black_rating
                 list_of_ratings.append(rating_after_game)
-                # print(f"Rating for {username} after the game: {rating_after_game}")
         return list_of_ratings
