@@ -1,9 +1,11 @@
+from brain import Brain
 import pprint
 import json
 import typing
 from networking import Networking
 import discord
 from discord.ext import commands
+import time
 
 printer = pprint.PrettyPrinter()
 
@@ -75,8 +77,50 @@ async def get_input_from_question(ctx, question: str) -> str:
 #     await ctx.send(f"You are now linked to: {message.content}")
 
 
-if __name__ == '__main__':
+def network_test():
     networking = Networking()
     networking.get_player(player_username="p1u95")
     networking.get_player_rating(player_username="p1u95", game_type="chess_blitz")
+
+
+def brain_test():
+    # Set up some variables for testing with like your name and the game format you want to look for
+    brain = Brain()  # Create an instance of the Brain class
+    test_username = "p1u95"
+    test_time_class = "blitz"
+
+    archives_start_time = time.time()
+    all_archives = brain.get_player_game_archives(player_username=test_username)  # Get a list of your game archives
+    print(f"All of your archives look like: \n{all_archives[0:3]}")
+    print("Time to get archives")
+    print(f"--- {time.time() - archives_start_time} seconds ---\n")
+
+    # Go through each of my game archives, which is just a big list of strings, and convert those archives into a
+    # game object.
+    ratings_start_time = time.time()
+    all_games = []
+    for url in all_archives:
+        converted_game = brain.convert_archive_to_games(archive_url=url)  # Convert the url to a Game object
+        # Add the game to a list containing all the games. Reason for extending included at the top
+        all_games.extend(converted_game)
+    print(f"All of your games look like: \n{all_games[0:3]}\n")
+
+    # From the list of games, create a list of ratings. Obviously this doesn't have the data included at the moment
+    # but this can easily be added to the Game class :)
+    all_ratings = brain.get_rating_changes(username=test_username,
+                                           games=all_games,
+                                           time_class=test_time_class)
+    print(f"All of your ratings are: \n{all_ratings}")
+    print("Time to get list of ratings")
+    print(f"--- {time.time() - ratings_start_time} seconds ---")
+
+
+if __name__ == '__main__':
+    # For testing networking
+    # network_test()
+
+    # For testing the brain
+    brain_test()
+
+    # For running the bot
     # bot.run(token)
