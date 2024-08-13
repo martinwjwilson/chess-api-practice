@@ -3,12 +3,7 @@ from game import Game
 from networking import Networking
 import pprint
 
-printer = pprint.PrettyPrinter()
 networking = Networking()
-test_username = "p1u95"
-year = datetime.now().strftime("%Y")
-month = datetime.now().strftime("%m")
-test_time_class = "blitz"
 
 
 class Brain:
