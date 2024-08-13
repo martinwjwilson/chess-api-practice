@@ -9,15 +9,12 @@ class Networking:
     def get_player(self, player_username: str):
         url = f'https://api.chess.com/pub/player/{player_username}'
         response = self.__perform_request(url=url)
-        printer.pprint(response)
         return response
 
     def get_player_rating(self, player_username: str, game_type: str) -> int:
         url = f'https://api.chess.com/pub/player/{player_username}/stats'
         response = self.__perform_request(url=url)
-        printer.pprint(response)
         player_rating = response[game_type]['last']['rating']
-        printer.pprint(f"Your rating for {game_type} is: {player_rating}")
         return int(player_rating)
 
     def get_player_game_archives(self, player_username: str):
