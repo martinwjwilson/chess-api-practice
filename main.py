@@ -84,25 +84,35 @@ def network_test():
 
 
 def brain_test():
-    # Set up
-    brain = Brain()
+    # Set up some variables for testing with like your name and the game format you want to look for
+    brain = Brain()  # Create an instance of the Brain class
     test_username = "p1u95"
     test_time_class = "blitz"
 
-    start_time = time.time()
-    archives = brain.get_player_game_archives(test_username)
+    archives_start_time = time.time()
+    all_archives = brain.get_player_game_archives(player_username=test_username)  # Get a list of your game archives
+    print(f"All of your archives look like: \n{all_archives[0:3]}")
     print("Time to get archives")
-    print(f"--- {time.time() - start_time} seconds ---")
-    start_time = time.time()
-    list_of_games = []
-    for archive in archives:
-        converted_games = brain.convert_archive_to_games(archive_url=archive)
-        for game in converted_games:
-            list_of_games.append(game)
-    list_of_ratings = brain.get_rating_changes(username=test_username, games=list_of_games, time_class=test_time_class)
-    print(list_of_ratings)
+    print(f"--- {time.time() - archives_start_time} seconds ---\n")
+
+    # Go through each of my game archives, which is just a big list of strings, and convert those archives into a
+    # game object.
+    ratings_start_time = time.time()
+    all_games = []
+    for url in all_archives:
+        converted_game = brain.convert_archive_to_games(archive_url=url)  # Convert the url to a Game object
+        # Add the game to a list containing all the games. Reason for extending included at the top
+        all_games.extend(converted_game)
+    print(f"All of your games look like: \n{all_games[0:3]}\n")
+
+    # From the list of games, create a list of ratings. Obviously this doesn't have the data included at the moment
+    # but this can easily be added to the Game class :)
+    all_ratings = brain.get_rating_changes(username=test_username,
+                                           games=all_games,
+                                           time_class=test_time_class)
+    print(f"All of your ratings are: \n{all_ratings}")
     print("Time to get list of ratings")
-    print(f"--- {time.time() - start_time} seconds ---")
+    print(f"--- {time.time() - ratings_start_time} seconds ---")
 
 
 if __name__ == '__main__':
