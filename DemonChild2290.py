@@ -3,6 +3,9 @@ Hello, I made this file to explain what's going on roughly
 
 Firstly I import my Brain class, I've just put all of my logic in here for now
 
+The rest of the logic is explained in if __name__ == "__main__": at the bottom
+
+This is an explanation of something I do underneath
 The reason for extending the list is this...
 a = [1, 2, 3]
 b = [4, 5, 6]
@@ -15,8 +18,6 @@ But if you extend...
 c.extend(a)
 c
 [7, 8, 9, 1, 2, 3]
-
-The rest of the logic is explained in if __name__ == "__main__": at the bottom
 """
 
 from brain import Brain
