@@ -30,18 +30,6 @@ class Networking:
         # TODO: Error handling - Put a check in here for if the response fails
         return archives
 
-    # TODO: Do this method for a specific year and month?
-    # def get_player_game_archives(self, player_username: str, selected_year: str, selected_month: str):
-    #     """
-    #     Returns a json of game archives
-    #     """
-    #     https: // api.chess.com / pub / player / p1u95 / games / archives
-    #     url = f'https://api.chess.com/pub/player/{player_username}/games/{selected_year}/{selected_month}'
-    #     response = self.__perform_request(url=url)
-    #     # TODO: Error handling - Put a check in here for if the response fails
-    #     games = response["games"]
-    #     return games
-
     def get_games_from_archive(self, archive_url: str):
         response = self.__perform_request(url=archive_url)
         return response['games']
