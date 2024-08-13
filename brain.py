@@ -24,7 +24,8 @@ class Brain:
                                                 white_username=archived_game["white"]["username"],
                                                 black_rating=archived_game["black"]["rating"],
                                                 white_rating=archived_game["white"]["rating"],
-                                                time_class=archived_game["time_class"]))
+                                                time_class=archived_game["time_class"],
+                                                timestamp=archived_game['end_time']))
         return converted_list_of_games
 
     @staticmethod
@@ -36,7 +37,5 @@ class Brain:
         for game in games:  # Go through each game
             if game.time_class == time_class:  # Check the game is the correct time class. e.g. bullet or blitz
                 # Determine the player's colour, get their rating and add it to the list of ratings
-                player_colour = "white" if game.white_username == username else "black"
-                rating_after_game = game.white_rating if player_colour == "white" else game.black_rating
-                list_of_ratings.append(rating_after_game)
+                list_of_ratings.append(game.get_player_rating_from_username(username=username))
         return list_of_ratings
