@@ -33,4 +33,8 @@ class Networking:
 
     @staticmethod
     def __perform_request(url):
+        """
+        Takes a URL and performs a network call with the relevant headers
+        :param url: The URL to use in the call
+        """
         return requests.get(url, headers={'User-Agent': 'username: p1u95, email: martinwjwilson@gmail.com'}).json()
