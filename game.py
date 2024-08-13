@@ -7,3 +7,7 @@ class Game:
         self.white_rating = white_rating
         self.time_class = time_class
         self.timestamp = timestamp
+
+    def get_player_rating_from_username(self, username: str) -> int:
+        player_colour = "white" if self.white_username == username else "black"
+        return self.white_rating if player_colour == "white" else self.black_rating
