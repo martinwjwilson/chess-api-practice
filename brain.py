@@ -24,7 +24,8 @@ class Brain:
                                                 white_username=archived_game["white"]["username"],
                                                 black_rating=archived_game["black"]["rating"],
                                                 white_rating=archived_game["white"]["rating"],
-                                                time_class=archived_game["time_class"]))
+                                                time_class=archived_game["time_class"],
+                                                timestamp=archived_game['end_time']))
         return converted_list_of_games
 
     @staticmethod
