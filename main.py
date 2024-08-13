@@ -1,9 +1,11 @@
+from brain import Brain
 import pprint
 import json
 import typing
 from networking import Networking
 import discord
 from discord.ext import commands
+import time
 
 printer = pprint.PrettyPrinter()
 
@@ -75,8 +77,40 @@ async def get_input_from_question(ctx, question: str) -> str:
 #     await ctx.send(f"You are now linked to: {message.content}")
 
 
-if __name__ == '__main__':
+def network_test():
     networking = Networking()
     networking.get_player(player_username="p1u95")
     networking.get_player_rating(player_username="p1u95", game_type="chess_blitz")
+
+
+def brain_test():
+    # Set up
+    brain = Brain()
+    test_username = "p1u95"
+    test_time_class = "blitz"
+
+    start_time = time.time()
+    archives = brain.get_player_game_archives(test_username)
+    print("Time to get archives")
+    print(f"--- {time.time() - start_time} seconds ---")
+    start_time = time.time()
+    list_of_games = []
+    for archive in archives:
+        converted_games = brain.convert_archive_to_games(archive_url=archive)
+        for game in converted_games:
+            list_of_games.append(game)
+    list_of_ratings = brain.get_rating_changes(username=test_username, games=list_of_games, time_class=test_time_class)
+    print(list_of_ratings)
+    print("Time to get list of ratings")
+    print(f"--- {time.time() - start_time} seconds ---")
+
+
+if __name__ == '__main__':
+    # For testing networking
+    # network_test()
+
+    # For testing the brain
+    brain_test()
+
+    # For running the bot
     # bot.run(token)
