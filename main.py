@@ -89,6 +89,7 @@ def brain_test():
     test_username = "p1u95"
     test_time_class = "blitz"
 
+    print("Fetching your first 3 months of games...")
     archives_start_time = time.time()
     all_archives = brain.get_player_game_archives(player_username=test_username)  # Get a list of your game archives
     print(f"All of your archives look like: \n{all_archives[0:3]}")
@@ -97,6 +98,7 @@ def brain_test():
 
     # Go through each of my game archives, which is just a big list of strings, and convert those archives into a
     # game object.
+    print("Fetching all of your ratings from those archives...")
     ratings_start_time = time.time()
     all_games = []
     for url in all_archives:
