@@ -1,7 +1,5 @@
-from datetime import datetime
 from game import Game
 from networking import Networking
-import pprint
 
 networking = Networking()
 
@@ -14,9 +12,6 @@ class Brain:
 
     @staticmethod
     def convert_archive_to_games(archive_url: str) -> list[Game]:
-        """
-        Convert an archive url into a list of game data for that month
-        """
         archived_games = networking.get_games_from_archive(archive_url=archive_url)
         converted_list_of_games = []
         for archived_game in archived_games:
@@ -29,13 +24,10 @@ class Brain:
         return converted_list_of_games
 
     @staticmethod
-    def get_rating_changes(username: str, games: list[Game], time_class: str) -> list[int]:
-        """
-        Return a list of ratings from a list of games
-        """
+    def get_rating_changes_for_time_class(username: str, games: list[Game], time_class: str) -> list[int]:
         list_of_ratings = []
-        for game in games:  # Go through each game
-            if game.time_class == time_class:  # Check the game is the correct time class. e.g. bullet or blitz
-                # Determine the player's colour, get their rating and add it to the list of ratings
-                list_of_ratings.append(game.get_player_rating_from_username(username=username))
+        for game in games:
+            if game.time_class == time_class:
+                player_rating_in_game = game.get_player_rating_from_username(username=username)
+                list_of_ratings.append(player_rating_in_game)
         return list_of_ratings

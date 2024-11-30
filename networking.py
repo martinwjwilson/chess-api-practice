@@ -18,9 +18,6 @@ class Networking:
         return int(player_rating)
 
     def get_player_game_archives(self, player_username: str):
-        """
-        Returns a list of game archives
-        """
         url = f'https://api.chess.com/pub/player/{player_username}/games/archives'
         response = self.__perform_request(url=url)
         archives = response["archives"]

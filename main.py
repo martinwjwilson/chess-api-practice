@@ -21,8 +21,8 @@ bot = commands.Bot(command_prefix=">", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f"{bot.user.name} - {bot.user.id}")  # name of bot and ID
-    print(discord.__version__)  # current version of discord.py
+    print(f"{bot.user.name} - {bot.user.id}")
+    print(discord.__version__)
     print("Ready...")
 
 
@@ -34,7 +34,6 @@ async def hello(ctx):
 
 @bot.command()
 async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typing.Optional[str] = ""):
-    # ask for username if one wasn't provided
     if username == "":
         # TODO: create constants file for questions
         question = "What is your username?"
@@ -54,7 +53,6 @@ async def player_rating(ctx, username: typing.Optional[str] = "", game_type: typ
             return
     # TODO: Convert input to possible game types
 
-    print(f"username is now {username}")
     network_bot = Networking()
     rating = network_bot.get_player_rating(player_username=username, game_type=game_type)
     await ctx.send(f"The rating for **{username}** in **{game_type}** is **{rating}**")
@@ -109,9 +107,9 @@ def brain_test():
 
     # From the list of games, create a list of ratings. Obviously this doesn't have the data included at the moment
     # but this can easily be added to the Game class :)
-    all_ratings = brain.get_rating_changes(username=test_username,
-                                           games=all_games,
-                                           time_class=test_time_class)
+    all_ratings = brain.get_rating_changes_for_time_class(username=test_username,
+                                                          games=all_games,
+                                                          time_class=test_time_class)
     print(f"All of your ratings are: \n{all_ratings}")
     print("Time to get list of ratings")
     print(f"--- {time.time() - ratings_start_time} seconds ---")
