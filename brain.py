@@ -5,7 +5,7 @@ import pprint
 
 networking = Networking()
 
-
+# TODO: Rename brain to something more meaningful
 class Brain:
 
     @staticmethod
